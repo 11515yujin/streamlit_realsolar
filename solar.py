@@ -5,15 +5,15 @@ import joblib
 # 페이지 설정 (귀여운 아이콘과 제목)
 st.set_page_config(page_title="태양광 발전 예측", page_icon="☀️", layout="centered")
 
-# 모델 불러오기 (확장자 .pkl 없이 'solar'로 매칭)
+# 모델 불러오기 (정확히 'solar.pkl' 지정)
 @st.cache_resource
 def load_model():
-    return joblib.load("solar")
+    return joblib.load("solar.pkl")
 
 try:
     model = load_model()
 except Exception as e:
-    st.error(f"⚠️ 모델 파일을 불러오지 못했습니다. 파일명이 'solar'가 맞는지 확인해주세요! 에러 내용: {e}")
+    st.error(f"⚠️ 모델 파일을 불러오지 못했습니다. 'solar.pkl' 파일이 같은 폴더에 있는지 확인해주세요! 에러: {e}")
     st.stop()
 
 # 메인 화면 디자인
