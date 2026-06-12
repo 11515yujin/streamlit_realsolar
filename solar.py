@@ -5,20 +5,20 @@ import joblib
 # 페이지 설정 (귀여운 아이콘과 제목)
 st.set_page_config(page_title="태양광 발전 예측", page_icon="☀️", layout="centered")
 
-# 모델 불러오기
+# 모델 불러오기 (확장자 .pkl 없이 'solar'로 매칭)
 @st.cache_resource
 def load_model():
-    return joblib.load("solar.pkl")
+    return joblib.load("solar")
 
 try:
     model = load_model()
-except:
-    st.error("⚠️ 'solar.pkl' 파일이 같은 폴더에 있는지 확인해주세요!")
+except Exception as e:
+    st.error(f"⚠️ 모델 파일을 불러오지 못했습니다. 파일명이 'solar'가 맞는지 확인해주세요! 에러 내용: {e}")
     st.stop()
 
 # 메인 화면 디자인
 st.title("☀️ AI 태양광 발전량 예측기")
-st.write("기상 데이터를 슬라이더로 조절하여 실시간 발전량을 확인해보세요! (수행평가용)")
+st.write("기상 데이터를 슬라이더로 조절하여 실시간 발전량을 확인해보세요!")
 st.markdown("---")
 
 # 입력 섹션 (드래그 가능한 슬라이더)
@@ -37,13 +37,13 @@ with col2:
 
 st.markdown("---")
 
-# 예측 수행 및 결과 출력
+# 예측 수행 및 결과 출력 (코랩 컬럼 순서: 풍속, 일사량, 기온, 일조량)
 input_data = pd.DataFrame([[wind, rad, temp, sun]], columns=['풍속', '일사량', '기온', '일조량'])
 
 if st.button("🚀 발전량 예측하기", use_container_width=True):
     prediction = model.predict(input_data)[0]
     
-    # 귀여운 축하 효과
+    # 귀여운 축하 풍선 효과
     st.balloons()
     
     # 결과 박스 디자인
